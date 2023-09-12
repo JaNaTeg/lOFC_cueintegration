@@ -1,8 +1,5 @@
 library (Hmisc)
-#library (R.matlab)
 library (plotrix)
-#library (data.table)
-#library (matrixStats)
 library (lme4)
 library (afex)
 
@@ -117,86 +114,6 @@ diff_pred_acc_AX = (df_fmri_specrewexp$compAX_correct - df_fmri_specrewexp$condA
 diff_pred_acc_B = (df_fmri_specrewexp$compB_correct - df_fmri_specrewexp$condB_correct) - (df_fmri_specrewexp$compB_false - df_fmri_specrewexp$condB_false)
 
 t.test(diff_pred_acc_AX ,diff_pred_acc_B, paired =T)
-
-
-###################### brain ##############################
-
-uni_cs_path = "/Volumes/TOSHIBA EXT/POET/Data/POET/Stats/univariate/COMPOUND/Comp_6cues_1resp_1out/parameter_estimates"
-fs_u = dir(uni_cs_path,pattern='6cues_1resp_1out')   
-uni_cs<-readMat(file.path(uni_cs_path,fs_u))
-
-uni_cs_path_all = "/Users/jtegelbeckers/Documents/POET/univariate/COMPOUND/comp_6out_1cue_1resp/parameter_estimates"
-fs_uall = dir(uni_cs_path_all,pattern='6cues_1resp_1out')   
-uni_csall<-readMat(file.path(uni_cs_path_all,fs_uall))
-
-lOFC_unics = uni_cs$res[,,1]
-mOFC_unics = uni_cs$res[,,2]
-
-lOFC_uni_comp = (lOFC_unics[,1]+lOFC_unics[,3])/2
-lOFC_uni_sing = (lOFC_unics[,2]+lOFC_unics[,4])/2
-mOFC_uni_comp = (mOFC_unics[,1]+mOFC_unics[,3])/2
-mOFC_uni_sing = (mOFC_unics[,2]+mOFC_unics[,4])/2
-
-lOFC_uni_diff = lOFC_uni_comp-lOFC_uni_sing
-mOFC_uni_diff = mOFC_uni_comp-mOFC_uni_sing
-
-# AX vs B
-t.test(lOFC_unics[,1],lOFC_unics[,2], paired = T)
-t.test(mOFC_unics[,1],mOFC_unics[,2], paired = T)
-
-# CY vs D
-t.test(lOFC_unics[,3],lOFC_unics[,4], paired = T)
-t.test(mOFC_unics[,3],mOFC_unics[,4], paired = T)
-
-# comp vs single
-t.test(lOFC_uni_comp,lOFC_uni_sing, paired = T)
-t.test(mOFC_uni_comp,mOFC_uni_sing, paired = T)
-
-#Interaction
-t.test((lOFC_unics[,1]-lOFC_unics[,2]),(lOFC_unics[,3]-lOFC_unics[,4]), paired = T)
-t.test((mOFC_unics[,1]-mOFC_unics[,2]),(mOFC_unics[,3]-mOFC_unics[,4]), paired = T)
-
-
-### glmm
-lOFC_uni_all = uni_csall$res[,,1]
-mOFC_uni_all = uni_csall$res[,,2]
-
-unimodel = data.frame(rep(1:N,16),rep(rep(c(1:4),each=N),4),rep(c(1,2,1,2),each=N*4),rep(c(1,2),each=N*8))
-colnames(unimodel) = c('Subj','run','comp','rew')
-
-unimodel$rOFC = c(lOFC_uni_all[,1],lOFC_uni_all[,5],lOFC_uni_all[,9],lOFC_uni_all[,13],lOFC_uni_all[,2], lOFC_uni_all[,6], lOFC_uni_all[,10],lOFC_uni_all[,14],lOFC_uni_all[,3],lOFC_uni_all[,7],lOFC_uni_all[,11],lOFC_uni_all[,15],lOFC_uni_all[,4], lOFC_uni_all[,8], lOFC_uni_all[,12],lOFC_uni_all[,16])
-unimodel$mOFC = c(mOFC_uni_all[,1],mOFC_uni_all[,5],mOFC_uni_all[,9],mOFC_uni_all[,13],mOFC_uni_all[,2], mOFC_uni_all[,6], mOFC_uni_all[,10],mOFC_uni_all[,14],mOFC_uni_all[,3],mOFC_uni_all[,7],mOFC_uni_all[,11],mOFC_uni_all[,15],mOFC_uni_all[,4], mOFC_uni_all[,8], mOFC_uni_all[,12],mOFC_uni_all[,16])
-
-unimodel$Subj = as.factor(unimodel$Subj)
-#unimodel$run = as.factor(unimodel$run)
-unimodel$comp = as.factor(unimodel$comp)
-unimodel$rew = as.factor(unimodel$rew)
-
-# separate models for odor and no odor
-model.diff_uniAXB_lOFC =lmer(rOFC ~ 1 + comp+run + (1|Subj), data =unimodel[unimodel$rew==1,])
-summary(model.diff_uniAXB_lOFC)
-
-model.diff_uniCYD_lOFC =lmer(rOFC ~ 1 + comp+run + (1|Subj), data =unimodel[unimodel$rew==2,])
-summary(model.diff_uniCYD_lOFC)
-
-model.diff_uniAXB_mOFC =lmer(mOFC ~ 1 + comp+run + (1|Subj), data =unimodel[unimodel$rew==1,])
-summary(model.diff_uniAXB_mOFC)
-
-model.diff_uniCYD_mOFC =lmer(mOFC ~ 1 + comp+run + (1|Subj), data =unimodel[unimodel$rew==2,])
-summary(model.diff_uniCYD_mOFC)
-
-# full model
-model.diff_uni_lOFC =lmer(rOFC ~ 1 + rew*comp+run + (1|Subj), data = unimodel)
-summary(model.diff_uni_lOFC)
-
-model.diff_uni_mOFC =lmer(mOFC ~ 1 + rew*comp+run + (1|Subj), data = unimodel)
-summary(model.diff_uni_mOFC)
-
-### univariate outcome
-uni_cs_path_all = "/Users/jtegelbeckers/Documents/POET/univariate/COMPOUND/comp_6out_1cue_1resp/parameter_estimates"
-fs_uall = dir(uni_cs_path_all,pattern='6cues_1resp_1out')   
-uni_csall<-readMat(file.path(uni_cs_path_all,fs_uall))
-
 
 ######################################################## Experiment 2 - TMS ##################################################################
 
