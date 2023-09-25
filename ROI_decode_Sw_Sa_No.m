@@ -10,7 +10,7 @@ clearvars
 % PATHS 
 % libsvm-3.25 needs to be downloaded and added to path (addpath())
 
-ROIdata = load('data_ROI_6runs_Sw_Sa_No.mat');
+ROIdata = load('fMRIdata_ROI_6runs_Sw_Sa_No_.mat');
 
 nsubs = length(ROIdata.dataall);
 nroi = length(ROIdata.roifile);
