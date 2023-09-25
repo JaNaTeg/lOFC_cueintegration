@@ -230,29 +230,29 @@ summary(model.diff_acc_ShamcondCYD)
 
 ### linear models to test influence of stimulation on prediction speed
 
-model.diff_rt_cond_group =lmer(rt_diff ~ 1 + Group*rew*cue+run + (1|Subj), data = df_tms_comp)
+model.diff_rt_cond_group =lmer(rt_diff ~ 1 + group*rew*cue+run + (1|Subj), data = df_tms_comp)
 summary(model.diff_rt_cond_group)
 
 # separate models for odor and no odor
-model.diff_rt_condAXB =lmer(rt_diff ~ 1 + Group*cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$rew==1,])
+model.diff_rt_condAXB =lmer(rt_diff ~ 1 + group*cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$rew==1,])
 summary(model.diff_rt_condAXB)
 
-model.diff_rt_condCYD =lmer(rt_diff ~ 1 + Group*cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$rew==0,])
+model.diff_rt_condCYD =lmer(rt_diff ~ 1 + group*cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$rew==0,])
 summary(model.diff_rt_condCYD)
 
 # separate models for Stim and Sham
-model.diff_rt_Stim =lmer(rt_diff ~ 1 + rew*cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$Group==1,])
+model.diff_rt_Stim =lmer(rt_diff ~ 1 + rew*cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$group==1,])
 summary(model.diff_rt_Stim)
-model.diff_rt_StimcondAXB =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$Group==1 & df_tms_comp$rew==1,])
+model.diff_rt_StimcondAXB =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$group==1 & df_tms_comp$rew==1,])
 summary(model.diff_rt_StimcondAXB)
-model.diff_rt_StimcondCYD =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$Group==1 & df_tms_comp$rew==0,])
+model.diff_rt_StimcondCYD =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data =df_tms_comp[df_tms_comp$group==1 & df_tms_comp$rew==0,])
 summary(model.diff_rt_StimcondCYD)
 
-model.diff_rt_Sham =lmer(rt_diff ~ 1 + rew*cue+run + (1|Subj), data = df_tms_comp[df_tms_comp$Group==0,])
+model.diff_rt_Sham =lmer(rt_diff ~ 1 + rew*cue+run + (1|Subj), data = df_tms_comp[df_tms_comp$group==0,])
 summary(model.diff_rt_Sham)
-model.diff_rt_ShamcondAXB =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data = df_tms_comp[df_tms_comp$Group==0 & df_tms_comp$rew==1,])
+model.diff_rt_ShamcondAXB =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data = df_tms_comp[df_tms_comp$group==0 & df_tms_comp$rew==1,])
 summary(model.diff_rt_ShamcondAXB)
-model.diff_rt_ShamcondCYD =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data = df_tms_comp[df_tms_comp$Group==0 & df_tms_comp$rew==0,])
+model.diff_rt_ShamcondCYD =lmer(rt_diff ~ 1 + cue+run + (1|Subj), data = df_tms_comp[df_tms_comp$group==0 & df_tms_comp$rew==0,])
 summary(model.diff_rt_ShamcondCYD)
 
 
